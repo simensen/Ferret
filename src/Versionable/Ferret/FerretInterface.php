@@ -8,5 +8,5 @@ interface FerretInterface {
 
   public function setDetector(DetectorInterface $detector);
 
-  public function getMIMEType($filename);
+  public function detectFromFilename($filename);
 }

@@ -1,5 +1,8 @@
 <?php
+
 namespace Versionable\Ferret\Detector;
+
+use Versionable\Ferret\Metadata\Metadata;
 
 /**
  * Test class for Fileinfo.
@@ -38,8 +41,10 @@ class FileinfoTest extends \PHPUnit_Framework_TestCase
      */
     public function testDetect()
     {
-      $this->assertEquals('text/plain', $this->object->detect(__DIR__.'/../../../data/unit.txt'));
+      $metadata = new Metadata;
+      $metadata->set(Metadata::RESOURCE_NAME_KEY, __DIR__.'/../../../data/unit.txt');
 
+      $this->assertEquals('text/plain', $this->object->detect(null, $metadata));
     }
 
     /**
@@ -47,15 +52,9 @@ class FileinfoTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileNotExist()
     {
-      $this->setExpectedException('InvalidArgumentException');
+      $metadata = new Metadata;
+      $metadata->set(Metadata::RESOURCE_NAME_KEY, __DIR__.'/../../../data/unit.false');
 
-      $this->object->detect(__DIR__.'/../../../data/unit.false');
-    }
-
-    public function testGetAndSetMagicFilepath()
-    {
-        $path = '/foo/bar';
-        $this->object->setMagicFilepath($path);
-        $this->assertEquals($path, $this->object->getMagicFilepath());
+      $this->assertFalse($this->object->detect(null, $metadata));
     }
 }

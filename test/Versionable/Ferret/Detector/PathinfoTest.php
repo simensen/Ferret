@@ -1,8 +1,8 @@
 <?php
 
-namespace Versionable\Tests\Ferret\Detector;
+namespace Versionable\Ferret\Detector;
 
-use Versionable\Ferret\Detector\Pathinfo;
+use Versionable\Ferret\Metadata\Metadata;
 
 /**
  * Test class for Pathinfo.
@@ -37,14 +37,18 @@ class PathinfoTest extends \PHPUnit_Framework_TestCase
 
     public function testDetect()
     {
-      $this->assertEquals('text/plain', $this->object->detect(__DIR__.'/../../../data/unit.txt'));
+      $metadata = new Metadata;
+      $metadata->set(Metadata::RESOURCE_NAME_KEY, __DIR__.'/../../../data/unit.txt');
 
+      $this->assertEquals('text/plain', $this->object->detect(null, $metadata));
     }
 
     public function testDetectFail()
     {
-      $this->assertFalse($this->object->detect(__DIR__.'/../../../data/unit.false'));
+      $metadata = new Metadata;
+      $metadata->set(Metadata::RESOURCE_NAME_KEY, __DIR__.'/../../../data/unit.false');
 
+      $this->assertFalse($this->object->detect(null, $metadata));
     }
 
     public function testSetMapping()

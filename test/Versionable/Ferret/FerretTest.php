@@ -58,7 +58,7 @@ class FerretTest extends \PHPUnit_Framework_TestCase
 
         $this->object->setDetector($stub);
 
-        $this->assertEquals('text/plain', $this->object->getMimeType('somefile.txt'));
+        $this->assertEquals('text/plain', $this->object->detectFromFilename('somefile.txt'));
     }
 
 
@@ -75,6 +75,6 @@ class FerretTest extends \PHPUnit_Framework_TestCase
 
         $this->object->setDetector($stub);
 
-        $this->assertFalse($this->object->getMimeType('somefile.unknown'));
+        $this->assertFalse($this->object->detectFromFilename('somefile.unknown'));
     }
 }

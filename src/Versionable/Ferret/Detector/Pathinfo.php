@@ -3,10 +3,11 @@
 namespace Versionable\Ferret\Detector;
 
 use Versionable\Ferret\Detector\DetectorInterface;
+use Versionable\Ferret\Metadata\Metadata;
 
 class Pathinfo extends DetectorAbstract
 {
-  
+
   protected $mapping = array(
 
             'txt'   => 'text/plain',
@@ -63,34 +64,45 @@ class Pathinfo extends DetectorAbstract
             'odt'   => 'application/vnd.oasis.opendocument.text',
             'ods'   => 'application/vnd.oasis.opendocument.spreadsheet',
   );
-  
-  
+
+
   public function setMapping($mapping)
   {
     if (\is_array($mapping) && !empty($mapping))
     {
       $this->mapping = $mapping;
-      
+
       return true;
     }
-    
+
     return false;
   }
-  
-  public function getMapping() 
+
+  public function getMapping()
   {
     return $this->mapping;
   }
-    
-  public function detect($filepath)
+
+  public function detect($input = null, Metadata $metadata = null)
   {
+    if (null === $metadata) {
+      return false;
+    }
+
+    $filepath = $metadata->get(Metadata::RESOURCE_NAME_KEY);
+
+    if (null === $filepath)
+    {
+      return false;
+    }
+
     $ext = strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
 
     if (array_key_exists($ext, $this->mapping))
     {
       return $this->mapping[$ext];
     }
-    
+
     return false;
   }
 }
